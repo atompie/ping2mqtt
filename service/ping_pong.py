@@ -75,4 +75,5 @@ class PingPong:
 
             except OSError as e:
                 logging.error(str(e))
+                time.sleep(20)
 
