@@ -17,11 +17,13 @@ class Update:
 
 class MqttReporter:
 
-    def __init__(self, server: str, port: int, credentials: tuple):
+    def __init__(self, server: str, port: int, credentials: tuple, logger=None):
+        self.logger = logger
         user, password = credentials
         self._prefix = 'ping'
         self._mqtt_client = MqttClient(
             server=server, user=user, password=password, port=port,
+            logger=logger,
             subscribe=MqttSubscriber(topic="{}/CMND".format(self._prefix), callback=self._on_cmnd)
         )
 

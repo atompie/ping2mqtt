@@ -27,7 +27,7 @@ user = config['mqtt'].get('user', None)
 password = config['mqtt'].get('password', None)
 
 try:
-    mqtt = MqttReporter(host, port, credentials=(user, password))
+    mqtt = MqttReporter(host, port, credentials=(user, password), logger=logger)
 
     for topic, payload, qos in PingPong(config, logger, update=mqtt.require_update):
         logger.info("MQTT {} {} {}".format(topic, payload, qos))

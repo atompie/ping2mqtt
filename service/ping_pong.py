@@ -57,7 +57,7 @@ class PingPong:
                     online_payload = self.config[ip]['online_payload'] if 'online_payload' in self.config[
                         ip] else response_time
 
-                    qos = int(self.config[ip].get('qos',0))
+                    qos = int(self.config[ip].get('qos', 0))
 
                     if self.ping_state[ip] != online_payload:
                         self.ping_state[ip] = online_payload
@@ -83,6 +83,5 @@ class PingPong:
             except OSError as e:
                 self._disconnected = True
                 logging.error(str(e))
-                logging.error("Sleeping 20 sec.")
+                logging.error("Disconnected. Sleeping 20 sec.")
                 time.sleep(20)
-
