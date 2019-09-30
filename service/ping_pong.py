@@ -6,8 +6,9 @@ from multiping import multi_ping
 
 class PingPong:
 
-    def __init__(self, conf, logger):
+    def __init__(self, conf, logger, update):
 
+        self.update = update
         self.config = conf
         self.logger = logger
 
@@ -42,7 +43,8 @@ class PingPong:
             try:
                 online, offline = multi_ping(self.addresses, self.timeout, self.retry)
 
-                if self._time_to_update():
+                if self._time_to_update() or self.update:
+                    logging.info('Update...')
                     self.ping_state = {addr: None for addr in self.addresses}
                     self.last_update = time.time()
 
@@ -75,5 +77,6 @@ class PingPong:
 
             except OSError as e:
                 logging.error(str(e))
+                logging.error("Sleeping 20 sec.")
                 time.sleep(20)
 
