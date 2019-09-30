@@ -1,0 +1,38 @@
+#! /usr/bin/python3
+import argparse
+import configparser
+
+from service.logger import LoggerWrapper
+from service.ping_pong import PingPong
+from service.reporter import MqttReporter
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--config", help="Path to config file", default="/etc/ping2mqtt.conf", required=False)
+parser.add_argument("--log", help="Path to log file", required=False)
+
+args = parser.parse_args()
+
+config = configparser.ConfigParser(default_section='defaults')
+config.read(args.config)
+
+logger = LoggerWrapper(file=args.log)
+
+if 'mqtt' not in config:
+    logger.error("MQTT not defined in config file ({}).".format(args.config))
+    exit(1)
+
+host = config['mqtt'].get('host', '127.0.0.1')
+port = int(config['mqtt'].get('port', 1883))
+user = config['mqtt'].get('user', None)
+password = config['mqtt'].get('password', None)
+
+try:
+    mqtt = MqttReporter(host, port, credentials=(user, password))
+
+    for topic, payload, qos in PingPong(config, logger):
+        logger.info("MQTT {} {} {}".format(topic, payload, qos))
+        mqtt.report(topic, payload, qos)
+
+except ConnectionRefusedError as e:
+    logger.error(str(e))
+    exit(1)

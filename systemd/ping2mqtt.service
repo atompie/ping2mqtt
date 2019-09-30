@@ -1,0 +1,10 @@
+[Unit]
+Description=ping2mqtt
+After=network.target
+
+[Service]
+Environment=PATH=/usr/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+ExecStart=/usr/bin/python3 /opt/ping2mqtt/ping2mqtt --config=/etc/ping2mqtt.conf --log /var/log/ping2mqtt.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,2 +1,20 @@
 # ping2mqtt
-Online precense to mqtt
+Online presence to mqtt
+
+#Installation
+
+    sudo pip3 install multiping
+    sudo pip3 install paho-mqtt
+    
+    cd /opt
+    sudo git clone https://github.com/atompie/ping2mqtt.git
+    sudo cp ping2mqtt.conf /etc/ping2mqtt.conf
+    sudo cp systemd/ping2mqtt.service /etc/systemd/system/ping2mqtt.service
+    sudo chown root:root /etc/systemd/system/ping2mqtt.service
+    sudo chmod 664 /etc/systemd/system/ping2mqtt.service
+
+    sudo systemctl daemon-reload
+    
+# Running
+
+Service runs only as root.
