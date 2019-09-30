@@ -18,3 +18,9 @@ Online presence to mqtt
 # Running
 
 Service runs only as root.
+
+    sudo service ping2mqtt start 
+    
+Start at server stat-up
+
+    sudo systemctl enable ping2mqtt

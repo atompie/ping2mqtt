@@ -73,3 +73,6 @@ class PingPong:
             except multiping.MultiPingSocketError as e:
                 logging.error(str(e))
 
+            except OSError as e:
+                logging.error(str(e))
+
