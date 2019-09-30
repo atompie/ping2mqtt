@@ -1,7 +1,7 @@
 # ping2mqtt
 Online presence to mqtt
 
-#Installation
+# Installation
 
     sudo pip3 install multiping
     sudo pip3 install paho-mqtt
