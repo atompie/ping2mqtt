@@ -11,6 +11,7 @@ class PingPong:
         self.update = update
         self.config = conf
         self.logger = logger
+        self._disconnected = False
 
         addresses = self.config.sections()
         if 'ping' in addresses:
@@ -43,6 +44,10 @@ class PingPong:
             try:
                 online, offline = multi_ping(self.addresses, self.timeout, self.retry)
 
+                if self._disconnected:
+                    logging.info('Reconnecting...')
+
+                self._disconnected = False
                 if self._time_to_update() or self.update:
                     logging.info('Update...')
                     self.ping_state = {addr: None for addr in self.addresses}
@@ -76,6 +81,7 @@ class PingPong:
                 logging.error(str(e))
 
             except OSError as e:
+                self._disconnected = True
                 logging.error(str(e))
                 logging.error("Sleeping 20 sec.")
                 time.sleep(20)
